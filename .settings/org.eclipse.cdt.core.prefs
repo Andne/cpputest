@@ -1,5 +1,9 @@
-#Mon Jun 07 17:30:05 SGT 2010
 eclipse.preferences.version=1
+environment/project/0.581606933/SILENCE/delimiter=;
+environment/project/0.581606933/SILENCE/operation=append
+environment/project/0.581606933/SILENCE/value=
+environment/project/0.581606933/append=true
+environment/project/0.581606933/appendContributed=true
 org.eclipse.cdt.core.formatter.alignment_for_arguments_in_method_invocation=16
 org.eclipse.cdt.core.formatter.alignment_for_base_clause_in_type_declaration=80
 org.eclipse.cdt.core.formatter.alignment_for_compact_if=0

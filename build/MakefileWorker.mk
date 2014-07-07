@@ -69,7 +69,7 @@
 # Platforms
 UNAME_OUTPUT = "$(shell uname -a)"
 MACOSX_STR = Darwin
-MINGW_STR = MINGW
+MINGW_STR = MinGW
 CYGWIN_STR = CYGWIN
 LINUX_STR = Linux
 SUNOS_STR = SunOS
@@ -115,8 +115,10 @@ ifeq ($(findstring $(CLANG_STR),$(CC_VERSION_OUTPUT)),$(CLANG_STR))
 endif
 
 #Kludge for mingw, it does not have cc.exe, but gcc.exe will do
+# Also, need to specify *.exe for several other tools in order for them to not pick up the built-in versions
 ifeq ($(UNAME_OS),$(MINGW_STR))
 	CC := gcc
+	TOOL_EXTENSION := .exe
 endif
 
 #And another kludge. Exception handling in gcc 4.6.2 is broken when linking the
@@ -389,7 +391,7 @@ STUFF_TO_CLEAN += \
 
 #The gcda files for gcov need to be deleted before each run
 #To avoid annoying messages.
-GCOV_CLEAN = $(SILENCE)rm -f $(GCOV_GCDA_FILES) $(GCOV_OUTPUT) $(GCOV_REPORT) $(GCOV_ERROR)
+GCOV_CLEAN = $(SILENCE)$(RM) -f $(GCOV_GCDA_FILES) $(GCOV_OUTPUT) $(GCOV_REPORT) $(GCOV_ERROR)
 RUN_TEST_TARGET = $(SILENCE)  $(GCOV_CLEAN) ; echo "Running $(TEST_TARGET)"; ./$(TEST_TARGET) $(CPPUTEST_EXE_FLAGS)
 
 ifeq ($(CPPUTEST_USE_GCOV), Y)
@@ -426,11 +428,15 @@ DEP_FLAGS=-MMD -MP
 
 # Some macros for programs to be overridden. For some reason, these are not in Make defaults
 RANLIB = ranlib
+MKDIR = mkdir$(TOOL_EXTENSION)
+RM = rm$(TOOL_EXTENSION)
+MV = mv$(TOOL_EXTENSION)
+CAT = cat$(TOOL_EXTENSION)
 
 # Targets
 
 .PHONY: all
-all: start $(TEST_TARGET)  
+all: $(TEST_TARGET)  
 	$(RUN_TEST_TARGET)	
 
 .PHONY: start
@@ -466,7 +472,7 @@ $(TEST_TARGET): $(TEST_DEPS)
 
 $(TARGET_LIB): $(OBJ)
 	@echo Building archive $@
-	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(MKDIR) -p $(dir $@)
 	$(SILENCE)$(AR) $(ARFLAGS) $@ $^
 	$(SILENCE)$(RANLIB) $@
 
@@ -478,17 +484,17 @@ vtest: $(TEST_TARGET)
 
 $(CPPUTEST_OBJS_DIR)/%.o: %.cc
 	@echo compiling $(notdir $<)
-	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(MKDIR) -p $(dir $@)
 	$(SILENCE)$(COMPILE.cpp) $(DEP_FLAGS) $(OUTPUT_OPTION) $<
 
 $(CPPUTEST_OBJS_DIR)/%.o: %.cpp
 	@echo compiling $(notdir $<)
-	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(MKDIR) -p $(dir $@)
 	$(SILENCE)$(COMPILE.cpp) $(DEP_FLAGS) $(OUTPUT_OPTION) $<
 
 $(CPPUTEST_OBJS_DIR)/%.o: %.c
 	@echo compiling $(notdir $<)
-	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(MKDIR) -p $(dir $@)
 	$(SILENCE)$(COMPILE.c) $(DEP_FLAGS)  $(OUTPUT_OPTION) $<
 
 ifneq "$(MAKECMDGOALS)" "clean"
@@ -499,7 +505,7 @@ endif
 clean:
 	@echo Making clean
 	$(SILENCE)$(RM) $(STUFF_TO_CLEAN)
-	$(SILENCE)rm -rf gcov $(CPPUTEST_OBJS_DIR)
+	$(SILENCE)$(RM) -rf gcov $(CPPUTEST_OBJS_DIR)
 	$(SILENCE)find . -name "*.gcno" | xargs rm -f
 	$(SILENCE)find . -name "*.gcda" | xargs rm -f
 
@@ -507,7 +513,7 @@ clean:
 #not just the ones made by this makefile
 .PHONY: realclean
 realclean: clean
-	$(SILENCE)rm -rf gcov
+	$(SILENCE)$(RM) -rf gcov
 	$(SILENCE)find . -name "*.gdcno" | xargs rm -f
 	$(SILENCE)find . -name "*.[do]" | xargs rm -f	
 
@@ -523,10 +529,10 @@ else
 	done
 endif
 	$(CPPUTEST_HOME)/scripts/filterGcov.sh $(GCOV_OUTPUT) $(GCOV_ERROR) $(GCOV_REPORT) $(TEST_OUTPUT)
-	$(SILENCE)cat $(GCOV_REPORT)
-	$(SILENCE)mkdir -p gcov
-	$(SILENCE)mv *.gcov gcov
-	$(SILENCE)mv gcov_* gcov
+	$(SILENCE)$(CAT) $(GCOV_REPORT)
+	$(SILENCE)$(MKDIR) -p gcov
+	$(SILENCE)$(MV) *.gcov gcov
+	$(SILENCE)$(MV) gcov_* gcov
 	@echo "See gcov directory for details"
 
 .PHONEY: format
