@@ -123,6 +123,9 @@
     <ClInclude Include="..\..\include\CppUTest\UtestMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\CppUTest\CppUTestConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
