@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir>$(MSBuildThisFileDirectory)..\lib\$(Platform)\$(PlatformToolset)\</OutDir>
-    <IntDir>$(MSBuildThisFileDirectory)..\obj\$(Configuration)\$(Platform)\$(PlatformToolset)\</IntDir>
+    <OutDir>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)', '$(MSBuildThisFileDirectory)..\lib\$(Platform)\$(PlatformToolset)'))\</OutDir>
+    <IntDir>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)', '$(MSBuildThisFileDirectory)..\objs\$(Configuration)\$(ProjectName)\$(Platform)\$(PlatformToolset)'))\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
