@@ -11,6 +11,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppUTest.Test", "tests\CppU
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppUTestExt.Test", "tests\CppUTestExt\CppUTestExt.Tests.vcxproj", "{3233D4D4-4F00-4129-AFF1-FC81C3691CB4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0EF4A1F4-C45B-4186-9C79-A70BB3C25868}"
+	ProjectSection(SolutionItems) = preProject
+		README = README
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
