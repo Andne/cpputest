@@ -119,6 +119,7 @@
       <StringPooling>true</StringPooling>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <ForcedIncludeFiles>Platform.h;CppUTest\MemoryLeakDetectorMallocMacros.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
