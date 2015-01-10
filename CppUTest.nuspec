@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>CppUTest</id>
+    <version>$version$</version>
+    <authors>James Grenning, Bas Vodde</authors>
+    <owners>Andy Neebel</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>http://cpputest.github.io/</projectUrl>
+    <tags>native</tags>
+    <description>CppUTest unit testing and mocking framework for C/C++</description>
+  </metadata>
+  <files>
+    <!-- Include files -->
+    <file src="include\**\*.h" target="build\native\include" exclude="include\Platforms\**" />
+    
+    <!-- Library files to link against -->
+    <file src="lib\Win32\**\*.lib" target="build\native\lib\Win32" />
+  </files>
+</package>
