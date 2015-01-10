@@ -16,5 +16,6 @@
     
     <!-- Library files to link against -->
     <file src="lib\Win32\**\*.lib" target="build\native\lib\Win32" />
+    <file src="lib\x64\**\*.lib" target="build\native\lib\x64" />
   </files>
 </package>
