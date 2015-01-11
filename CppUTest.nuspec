@@ -9,6 +9,7 @@
     <projectUrl>http://cpputest.github.io/</projectUrl>
     <tags>native</tags>
     <description>CppUTest unit testing and mocking framework for C/C++</description>
+    <dependencies />
   </metadata>
   <files>
     <!-- Include files -->
