@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>CppUTest</id>
-    <version>3.7.0-ci</version>
+    <version>3.7.0</version>
     <authors>James Grenning, Bas Vodde</authors>
     <owners>Andy Neebel</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
