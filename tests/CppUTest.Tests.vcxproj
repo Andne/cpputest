@@ -126,9 +126,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
     </Link>
-    <PostBuildEvent>
-      <Command>"$(TargetPath)"</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
