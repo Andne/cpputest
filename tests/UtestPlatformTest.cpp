@@ -35,7 +35,7 @@ TEST_GROUP(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess)
     TestTestingFixture fixture;
 };
 
-#ifdef __MINGW32__
+#if defined(__MINGW32__)
 
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, MinGwWorks)
 {
@@ -43,6 +43,16 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, MinGwWorks)
     fixture.runAllTests();
     fixture.assertPrintContains(
        "-p doesn't work on MinGW as it is lacking fork.");
+}
+
+#elif defined(_MSC_VER)
+
+TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, VisualCppWorks)
+{
+   fixture.registry_->setRunTestsInSeperateProcess();
+   fixture.runAllTests();
+   fixture.assertPrintContains(
+      "-p doesn't work on Visual C++ as it is lacking fork.");
 }
 
 #else
@@ -68,6 +78,14 @@ static int _divisionByZeroTestFunction()
     return 1 / (a - a);
 }
 
+#include <unistd.h>
+#include <signal.h>
+
+static void _stoppedTestFunction()
+{
+    kill(getpid(), SIGSTOP);
+}
+
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, FailureInSeparateProcessWorks)
 {
     fixture.registry_->setRunTestsInSeperateProcess();
@@ -90,6 +108,14 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, DivisionByZer
     fixture.setTestFunction((void(*)())_divisionByZeroTestFunction);
     fixture.runAllTests();
     fixture.assertPrintContains("Failed in separate process - killed by signal 8");
+}
+
+TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, StoppedInSeparateProcessWorks)
+{
+    fixture.registry_->setRunTestsInSeperateProcess();
+    fixture.setTestFunction(_stoppedTestFunction);
+    fixture.runAllTests();
+    fixture.assertPrintContains("Stopped in separate process - forcing terminate");
 }
 
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, CallToForkFailedInSeparateProcessWorks)
