@@ -51,28 +51,28 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\build\CppUTestVisualCppIncludes.props" />
+    <Import Project="..\build\CppUTestVisualCpp.props" />
     <Import Project="..\build\CppUTestIncludes.props" />
     <Import Project="..\build\CppUTestDirectories.props" />
     <Import Project="..\build\CppUTestExeDirectories.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\build\CppUTestVisualCppIncludes.props" />
+    <Import Project="..\build\CppUTestVisualCpp.props" />
     <Import Project="..\build\CppUTestIncludes.props" />
     <Import Project="..\build\CppUTestDirectories.props" />
     <Import Project="..\build\CppUTestExeDirectories.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\build\CppUTestVisualCppIncludes.props" />
+    <Import Project="..\build\CppUTestVisualCpp.props" />
     <Import Project="..\build\CppUTestIncludes.props" />
     <Import Project="..\build\CppUTestDirectories.props" />
     <Import Project="..\build\CppUTestExeDirectories.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\build\CppUTestVisualCppIncludes.props" />
+    <Import Project="..\build\CppUTestVisualCpp.props" />
     <Import Project="..\build\CppUTestIncludes.props" />
     <Import Project="..\build\CppUTestDirectories.props" />
     <Import Project="..\build\CppUTestExeDirectories.props" />
