@@ -203,6 +203,23 @@ TEST(MockSupportTest, strictOrderViolated)
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
 }
 
+TEST(MockSupportTest, strictOrderViolatedWorksHierarchically)
+{
+    mock().strictOrder();
+    mock("bla").strictOrder();
+    addFunctionToExpectationsList("foo1", 1)->callWasMade(2);
+    addFunctionToExpectationsList("foo2", 2)->callWasMade(1);
+    MockCallOrderFailure expectedFailure(mockFailureTest(), *expectationsList);
+    mock("bla").expectOneCall("foo1");
+    mock().expectOneCall("foo1");
+    mock().expectOneCall("foo2");
+    mock("bla").actualCall("foo1");
+    mock().actualCall("foo2");
+    mock().actualCall("foo1");
+    mock().checkExpectations();
+    CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
+}
+
 TEST(MockSupportTest, strictOrderViolatedWithinAScope)
 {
     mock().strictOrder();
@@ -698,7 +715,7 @@ TEST(MockSupportTest, unexpectedOutputParameter)
     mock().expectOneCall("foo");
     mock().actualCall("foo").withOutputParameter("parameterName", &param);
 
-    addFunctionToExpectationsList("foo")->callWasMade(1);;
+    addFunctionToExpectationsList("foo")->callWasMade(1);
     MockNamedValue parameter("parameterName");
     parameter.setValue(&param);
     MockUnexpectedOutputParameterFailure expectedFailure(mockFailureTest(), "foo", parameter, *expectationsList);
@@ -1642,6 +1659,19 @@ TEST(MockSupportTest, tracing)
     STRCMP_CONTAINS("foo", mock().getTraceOutput());
 }
 
+TEST(MockSupportTest, tracingWorksHierarchically)
+{
+    mock("scope").tracing(true);
+    mock().tracing(true);
+
+    mock().actualCall("boo");
+    mock("scope").actualCall("foo");
+    mock().checkExpectations();
+
+    STRCMP_CONTAINS("boo", mock().getTraceOutput());
+    STRCMP_CONTAINS("foo", mock().getTraceOutput());
+}
+
 TEST(MockSupportTest, shouldntFailTwice)
 {
        mock().expectOneCall("foo");
@@ -1720,25 +1750,44 @@ TEST(MockSupportTestWithFixture, mockExpectationShouldIncreaseNumberOfChecks)
     LONGS_EQUAL(4, fixture.getCheckCount());
 }
 
-#if !defined(__MINGW32__) && !defined(_MSC_VER)
+static bool cpputestHasCrashed;
+
+static void crashMethod()
+{
+    cpputestHasCrashed = true;
+}
 
 static void crashOnFailureTestFunction_(void)
 {
     mock().actualCall("unexpected");
 }
 
-TEST(MockSupportTestWithFixture, shouldCrashOnFailure)
+#include "CppUTestExt/OrderedTest.h"
+
+TEST_ORDERED(MockSupportTestWithFixture, shouldCrashOnFailure, 10)
 {
     mock().crashOnFailure(true);
-    fixture.registry_->setRunTestsInSeperateProcess();
+    UtestShell::setCrashMethod(crashMethod);
     fixture.setTestFunction(crashOnFailureTestFunction_);
+    
     fixture.runAllTests();
-    fixture.assertPrintContains("Failed in separate process - killed by signal 11");
+    
+    CHECK(cpputestHasCrashed);
+    
     mock().crashOnFailure(false);
+    UtestShell::resetCrashMethod();
 }
 
-#else
-
-IGNORE_TEST(MockSupportTestWithFixture, shouldCrashOnFailure) {}
-
-#endif
+TEST_ORDERED(MockSupportTestWithFixture, nextTestShouldNotCrashOnFailure, 11)
+{
+    cpputestHasCrashed = false;
+    UtestShell::setCrashMethod(crashMethod);
+    fixture.setTestFunction(crashOnFailureTestFunction_);
+    
+    fixture.runAllTests();
+    
+    fixture.assertPrintContains("Unexpected call to function: unexpected");
+    CHECK_FALSE(cpputestHasCrashed);
+    
+    UtestShell::resetCrashMethod();
+}
