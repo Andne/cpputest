@@ -46,10 +46,11 @@ public:
 
         TestTerminatorWithoutExceptions::exitCurrentTest();
     } // LCOV_EXCL_LINE
-
+    // LCOV_EXCL_START
     virtual ~MockFailureReporterTestTerminatorForInCOnlyCode()
     {
     }
+    // LCOV_EXCL_STOP
 private:
     bool crashOnFailure_;
 
@@ -62,7 +63,7 @@ public:
     {
         if (!getTestToFail()->hasFailed())
             getTestToFail()->failWith(failure, MockFailureReporterTestTerminatorForInCOnlyCode(crashOnFailure_));
-    }
+    } // LCOV_EXCL_LINE
 
 };
 
@@ -111,6 +112,7 @@ MockValue_c getData_c(const char* name);
 void checkExpectations_c();
 int expectedCallsLeft_c();
 void clear_c();
+void crashOnFailure_c(unsigned shouldCrash);
 
 MockExpectedCall_c* withIntParameters_c(const char* name, int value);
 MockExpectedCall_c* withUnsignedIntParameters_c(const char* name, unsigned int value);
@@ -212,6 +214,7 @@ static MockSupport_c gMockSupport = {
         checkExpectations_c,
         expectedCallsLeft_c,
         clear_c,
+        crashOnFailure_c,
         installComparator_c,
         removeAllComparators_c
 };
@@ -501,6 +504,11 @@ int expectedCallsLeft_c()
 void clear_c()
 {
     currentMockSupport->clear();
+}
+
+void crashOnFailure_c(unsigned shouldCrash)
+{
+    currentMockSupport->crashOnFailure(0 != shouldCrash);
 }
 
 MockSupport_c* mock_c()
