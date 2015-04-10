@@ -59,7 +59,7 @@ int (*PlatformSpecificSetJmp)(void (*function) (void*), void* data) = VisualCppS
 void (*PlatformSpecificLongJmp)(void) = VisualCppLongJmp;
 void (*PlatformSpecificRestoreJumpBuffer)(void) = VisualCppRestoreJumpBuffer;
  
-static void VisualCppRunTestInASeperateProcess(UtestShell* shell, TestPlugin* plugin, TestResult* result)
+static void VisualCppRunTestInASeperateProcess(UtestShell* shell, TestPlugin*, TestResult* result)
 {
    result->addFailure(TestFailure(shell, "-p doesn't work on Visual C++ as it is lacking fork.\b"));
 }

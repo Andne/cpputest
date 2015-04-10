@@ -58,7 +58,7 @@ extern "C"{
         return object1 == object2;
     }
 
-    static char* typeNameValueToString(const void* PUNUSED(object))
+    static char* typeNameValueToString(const void*)
     {
         return (char*) "valueToString";
     }
