@@ -30,6 +30,7 @@
 #include "CppUTest/TestTestingFixture.h"
 #include "CppUTestExt/MockSupport_c.h"
 #include "MockSupport_cTestCFile.h"
+#include "CppUTestExt/OrderedTest.h"
 
 TEST_GROUP(MockSupport_c)
 {
@@ -250,3 +251,55 @@ MSC_SWITCHED_TEST(MockSupport_c, NoExceptionsAreThrownWhenAMock_cCallFailed)
     CHECK(!destructorWasCalled);
 }
 
+static bool cpputestHasCrashed;
+
+static void crashMethod()
+{
+    cpputestHasCrashed = true;
+}
+
+TEST_ORDERED(MockSupport_c, shouldCrashOnFailure, 21)
+{
+    cpputestHasCrashed = false;
+    TestTestingFixture fixture;
+    UtestShell::setCrashMethod(crashMethod);
+    mock_c()->crashOnFailure(true);
+    fixture.setTestFunction(failedCallToMockC);
+    
+    fixture.runAllTests();
+
+    CHECK(cpputestHasCrashed);
+    
+    UtestShell::resetCrashMethod();
+    mock_c()->crashOnFailure(false);
+}
+
+TEST_ORDERED(MockSupport_c, nextTestShouldNotCrashOnFailure, 22)
+{
+    cpputestHasCrashed = false;
+    TestTestingFixture fixture;
+    UtestShell::setCrashMethod(crashMethod);
+    fixture.setTestFunction(failedCallToMockC);
+    
+    fixture.runAllTests();
+
+    CHECK_FALSE(cpputestHasCrashed);
+
+    UtestShell::resetCrashMethod();
+}
+
+static void failingCallToMockCWithParameterOfType_()
+{
+    mock_c()->expectOneCall("bar")->withParameterOfType("typeName", "name", (const void*) 1);
+    mock_c()->actualCall("bar")->withParameterOfType("typeName", "name", (const void*) 2);
+}
+
+TEST(MockSupport_c, failureWithParameterOfTypeCoversValueToString)
+{
+    TestTestingFixture fixture;
+    mock_c()->installComparator("typeName", typeNameIsEqual, typeNameValueToString);
+    fixture.setTestFunction(failingCallToMockCWithParameterOfType_);
+    fixture.runAllTests();
+    fixture.assertPrintContains("typeName name: <valueToString>");
+    mock_c()->removeAllComparators();
+}

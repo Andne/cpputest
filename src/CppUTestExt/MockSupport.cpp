@@ -53,9 +53,9 @@ MockSupport::~MockSupport()
 {
 }
 
-void MockSupport::crashOnFailure()
+void MockSupport::crashOnFailure(bool shouldCrash)
 {
-    activeReporter_->crashOnFailure();
+    activeReporter_->crashOnFailure(shouldCrash);
 }
 
 void MockSupport::setMockFailureStandardReporter(MockFailureReporter* reporter)
@@ -136,6 +136,8 @@ void MockSupport::strictOrder()
 MockExpectedCall& MockSupport::expectOneCall(const SimpleString& functionName)
 {
     if (!enabled_) return MockIgnoredExpectedCall::instance();
+
+    countCheck();
 
     MockCheckedExpectedCall* call = new MockCheckedExpectedCall;
     call->withName(functionName);
@@ -271,6 +273,11 @@ void MockSupport::failTestWithOutOfOrderCalls()
 void MockSupport::failTest(MockFailure& failure)
 {
     activeReporter_->failTest(failure);
+}
+
+void MockSupport::countCheck()
+{
+    UtestShell::getCurrent()->countCheck();
 }
 
 void MockSupport::checkExpectationsOfLastCall()
