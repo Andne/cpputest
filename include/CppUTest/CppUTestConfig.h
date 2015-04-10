@@ -178,6 +178,11 @@
 #define _override
 #endif
 
+/* Visual C++ 10.0 (2010) will complain about non-standard extension override at high warning levels */
+#if defined(_MSC_VER) && (_MSC_VER >= 1600) && (_MSC_VER < 1700)
+#pragma warning(disable: 4481)
+#endif
+
 /* MinGW-w64 prefers to act like Visual C++, but we want the ANSI behaviors instead */
 #define __USE_MINGW_ANSI_STDIO 1
 
