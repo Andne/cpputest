@@ -38,6 +38,7 @@ public:
         : test_(test), result_(result)
     {
     }
+    DELETE_ASSIGNMENT_OPERATOR(MockSupportPluginReporter)
 
     virtual void failTest(const MockFailure& failure) _override
     {

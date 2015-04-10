@@ -453,6 +453,7 @@ bool MockCheckedExpectedCall::isOutOfOrder() const
 struct MockExpectedCallCompositeNode
 {
     MockExpectedCallCompositeNode(MockExpectedCall& functionCall, MockExpectedCallCompositeNode* next) : next_(next), call_(functionCall){}
+    DELETE_ASSIGNMENT_OPERATOR(MockExpectedCallCompositeNode)
 
     MockExpectedCallCompositeNode* next_;
     MockExpectedCall& call_;

@@ -43,6 +43,7 @@ class TestResult
 public:
     TestResult(TestOutput&);
     DEFAULT_COPY_CONSTRUCTOR(TestResult)
+    DELETE_ASSIGNMENT_OPERATOR(TestResult)
     virtual ~TestResult();
 
     virtual void testsStarted();

@@ -137,10 +137,12 @@
   #define UT_THROW(exception)
 #endif
 
-#if defined(__cplusplus) && __cplusplus >= 201103L
+#if (defined(__cplusplus) && __cplusplus >= 201103L) || (defined(_MSC_VER) && _MSC_VER >= 1200)
     #define DEFAULT_COPY_CONSTRUCTOR(classname) classname(const classname &) = default;
+    #define DELETE_ASSIGNMENT_OPERATOR(classname) classname & operator=(const classname &) = delete;
 #else
     #define DEFAULT_COPY_CONSTRUCTOR(classname)
+    #define DELETE_ASSIGNMENT_OPERATOR(classname)
 #endif
 
 /*

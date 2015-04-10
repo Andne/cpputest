@@ -35,6 +35,7 @@ class MockCheckedActualCall : public MockActualCall
 {
 public:
     MockCheckedActualCall(int callOrder, MockFailureReporter* reporter, const MockExpectedCallsList& expectations);
+    DELETE_ASSIGNMENT_OPERATOR(MockCheckedActualCall)
     virtual ~MockCheckedActualCall();
 
     virtual MockActualCall& withName(const SimpleString& name) _override;

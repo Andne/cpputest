@@ -126,6 +126,7 @@ public:
     SetBooleanOnDestructorCall(bool& booleanToSet) : booleanToSet_(booleanToSet)
     {
     }
+    DELETE_ASSIGNMENT_OPERATOR(SetBooleanOnDestructorCall)
 
     virtual ~SetBooleanOnDestructorCall()
     {
