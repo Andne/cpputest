@@ -362,6 +362,7 @@ struct MockNamedValueComparatorRepositoryNode
 {
     MockNamedValueComparatorRepositoryNode(const SimpleString& name, MockNamedValueComparator& comparator, MockNamedValueComparatorRepositoryNode* next)
         : name_(name), comparator_(comparator), next_(next) {}
+    DELETE_ASSIGNMENT_OPERATOR(MockNamedValueComparatorRepositoryNode)
     SimpleString name_;
     MockNamedValueComparator& comparator_;
     MockNamedValueComparatorRepositoryNode* next_;
