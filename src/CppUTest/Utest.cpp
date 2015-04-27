@@ -37,6 +37,11 @@ bool doubles_equal(double d1, double d2, double threshold)
     return PlatformSpecificFabs(d1 - d2) <= threshold;
 }
 
+int division(int one, int two)
+{
+  return one / two;
+}
+
 /* Sometimes stubs use the CppUTest assertions.
  * Its not correct to do so, but this small helper class will prevent a segmentation fault and instead
  * will give an error message and also the file/line of the check that was executed outside the tests.
@@ -429,6 +434,16 @@ void UtestShell::assertDoublesEqual(double expected, double actual, double thres
     getTestResult()->countCheck();
     if (!doubles_equal(expected, actual, threshold))
         failWith(DoublesEqualFailure(this, fileName, lineNumber, expected, actual, threshold), testTerminator);
+}
+
+void UtestShell::assertBinaryEqual(const void *expected, const void *actual, size_t length, const char *fileName, int lineNumber, const TestTerminator& testTerminator)
+{
+    getTestResult()->countCheck();
+    if (actual == 0 && expected == 0) return;
+    if (actual == 0 || expected == 0)
+        failWith(BinaryEqualFailure(this, fileName, lineNumber, (const unsigned char *) expected, (const unsigned char *) actual, length), testTerminator);
+    if (SimpleString::MemCmp(expected, actual, length) != 0)
+        failWith(BinaryEqualFailure(this, fileName, lineNumber, (const unsigned char *) expected, (const unsigned char *) actual, length), testTerminator);
 }
 
 void UtestShell::assertEquals(bool failed, const char* expected, const char* actual, const char* file, int line, const TestTerminator& testTerminator)
