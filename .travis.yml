@@ -1,3 +1,4 @@
+sudo: false
 language: cpp
 os:
  - linux
@@ -48,15 +49,10 @@ global:
 addons:
   apt:
     packages:
-      # - dosbox
+      - dosbox
       - valgrind
-before_install:
-  #  - sudo pip install cpp-coveralls
-  - sudo apt-get install dosbox
 install:
   - gem install travis_github_deployer
-  - sudo apt-get update --fix-missing
-    #  - sudo apt-get install valgrind
 before_script:
   - export CPPUTEST_BUILD_DIR=$TRAVIS_BUILD_DIR/cpputest_build
   - mkdir -p $CPPUTEST_BUILD_DIR && cd $CPPUTEST_BUILD_DIR
