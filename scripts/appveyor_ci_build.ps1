@@ -31,7 +31,7 @@ function Invoke-CygwinCommand($command, $directory = '.')
     # Assume cygwin is located at C:\cygwin for now
     $cygwin_bin = "C:\cygwin\bin"
     $cygwin_directory = (. "${cygwin_bin}\cygpath.exe" (Resolve-Path $directory))
-    $command_wrapped = "${cygwin_bin}\bash.exe --login -c 'cd $cygwin_directory ; env -i PATH=/usr/local/bin:/usr/bin $command' ; `$err = `$?"
+    $command_wrapped = "${cygwin_bin}\bash.exe --login -c 'cd $cygwin_directory ; env -i PATH=/usr/local/bin:/usr/bin $command'"
     
     Write-Host "Executing <$command> in <$cygwin_directory>"
     Write-Host "Wrapped Command: $command_wrapped"
@@ -126,19 +126,10 @@ if ($env:PlatformToolset -eq 'v100')
 
 if ($env:PlatformToolset -eq 'Cygwin')
 {
-    # Need to do some path cleanup first
-    Remove-PathFolder "C:\MinGW\bin"
-    Remove-PathFolder "C:\Program Files\Git\bin"
-    Remove-PathFolder "C:\Program Files\Git\cmd"
-    Remove-PathFolder "C:\Program Files\Git\usr\bin"
-    Remove-PathFolder "C:\Program Files (x86)\Git\bin"
-    Remove-PathFolder "C:\Program Files (x86)\Git\cmd"
-    Write-Host $env:Path
-    Invoke-CygwinCommand "echo `$PATH"
-
     # Build
     Invoke-CygwinCommand "autoreconf -i .." "cpputest_build"
-    Invoke-CygwinCommand "../configure && make CppUTestTests.exe CppUTestExtTests.exe" "cpputest_build"
+    Invoke-CygwinCommand "../configure" "cpputest_build"
+    Invoke-CygwinCommand "make CppUTestTests.exe CppUTestExtTests.exe" "cpputest_build"
 }
 
 if ($env:PlatformToolset -eq 'MinGW')
