@@ -31,7 +31,7 @@ function Invoke-CygwinCommand($command, $directory = '.')
     # Assume cygwin is located at C:\cygwin for now
     $cygwin_bin = "C:\cygwin\bin"
     $cygwin_directory = (. "${cygwin_bin}\cygpath.exe" (Resolve-Path $directory))
-    $command_wrapped = "${cygwin_bin}\bash.exe --login -c 'cd $cygwin_directory ; pwd ; $command' ; `$err = `$?"
+    $command_wrapped = "${cygwin_bin}\bash.exe --login -c 'cd $cygwin_directory ; pwd ; env PATH=/usr/local/bin:/usr/bin $command' ; `$err = `$?"
     
     Write-Host "Executing <$command> in <$cygwin_directory>"
     Invoke-Expression $command_wrapped
