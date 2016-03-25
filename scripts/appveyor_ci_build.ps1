@@ -125,10 +125,15 @@ if ($env:PlatformToolset -eq 'v100')
 
 if ($env:PlatformToolset -eq 'Cygwin')
 {
-    # Version checks
-    Invoke-CygwinCommand "uname -a"
-    Invoke-CygwinCommand "autoreconf --version"
-    Invoke-CygwinCommand "gcc --version"
+    # Need to do some path cleanup first
+    Remove-PathFolder "C:\MinGW\bin"
+    Remove-PathFolder "C:\Program Files\Git\bin"
+    Remove-PathFolder "C:\Program Files\Git\cmd"
+    Remove-PathFolder "C:\Program Files\Git\usr\bin"
+    Remove-PathFolder "C:\Program Files (x86)\Git\bin"
+    Remove-PathFolder "C:\Program Files (x86)\Git\cmd"
+    Write-Host $env:Path
+    Invoke-CygwinCommand "echo `$PATH"
 
     # Build
     Invoke-CygwinCommand "autoreconf -i -W all -f .." "cpputest_build"
