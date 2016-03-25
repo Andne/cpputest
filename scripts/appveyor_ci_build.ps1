@@ -31,9 +31,10 @@ function Invoke-CygwinCommand($command, $directory = '.')
     # Assume cygwin is located at C:\cygwin for now
     $cygwin_bin = "C:\cygwin\bin"
     $cygwin_directory = (. "${cygwin_bin}\cygpath.exe" (Resolve-Path $directory))
-    $command_wrapped = "${cygwin_bin}\bash.exe --login -c 'cd $cygwin_directory ; pwd ; env PATH=/usr/local/bin:/usr/bin $command' ; `$err = `$?"
+    $command_wrapped = "${cygwin_bin}\bash.exe --login -c 'cd $cygwin_directory ; env PATH=/usr/local/bin:/usr/bin $command' ; `$err = `$?"
     
     Write-Host "Executing <$command> in <$cygwin_directory>"
+    Write-Host "Wrapped Command: $command_wrapped"
     Invoke-Expression $command_wrapped
 
     if ($LASTEXITCODE -ne 0)
@@ -136,7 +137,7 @@ if ($env:PlatformToolset -eq 'Cygwin')
     Invoke-CygwinCommand "echo `$PATH"
 
     # Build
-    Invoke-CygwinCommand "autoreconf -i -W all -f .." "cpputest_build"
+    Invoke-CygwinCommand "autoreconf -i .." "cpputest_build"
     Invoke-CygwinCommand "../configure && make CppUTestTests.exe CppUTestExtTests.exe" "cpputest_build"
 }
 
