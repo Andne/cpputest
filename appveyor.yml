@@ -23,7 +23,7 @@ environment:
 
 install:
 - ps: if ($env:PlatformToolset -eq 'MinGW') { choco install mingw --version $env:Version $( if ($env:Platform -eq 'Win32') { Write-Output -forcex86 } ) | Out-Null }
-- ps: if ($env:PlatformToolset -eq 'Cygwin') { . "C:\cygwin\cygwin-setup.exe" -qnNdO -R C:/cygwin -s http://cygwin.mirror.constant.com -l C:/cygwin/var/cache/setup --packages autoconf automake make gcc-core libtool gcc-g++ }
+- ps: if ($env:PlatformToolset -eq 'Cygwin') { . "C:\cygwin\setup-x86.exe" -qnNdO -R C:/cygwin -s http://cygwin.mirror.constant.com -l C:/cygwin/var/cache/setup --packages autoconf automake make gcc-core libtool gcc-g++ }
 
 build_script:
 - ps: scripts\appveyor_ci_build.ps1
