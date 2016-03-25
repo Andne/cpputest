@@ -125,7 +125,8 @@ if ($env:PlatformToolset -eq 'v100')
 
 if ($env:PlatformToolset -eq 'Cygwin')
 {
-    Invoke-CygwinCommand "autoreconf -i .. && ../configure && make CppUTestTests.exe CppUTestExtTests.exe" "cpputest_build"
+    Invoke-CygwinCommand "autoreconf -i -W all -f .." "cpputest_build"
+    Invoke-CygwinCommand "../configure && make CppUTestTests.exe CppUTestExtTests.exe" "cpputest_build"
 }
 
 if ($env:PlatformToolset -eq 'MinGW')
